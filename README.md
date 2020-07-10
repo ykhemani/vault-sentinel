@@ -84,7 +84,7 @@ Rule "precond" (byte offset 19) = true
 
 Let's now create a role with some other policy attached. This should succeed.
 
-````
+```
 vault write auth/approle-test/role/test-role token_policies="not-admin"
 ```
 
