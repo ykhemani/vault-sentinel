@@ -1,0 +1,30 @@
+import "strings"
+
+precond = rule {
+  request.operation in ["create", "update"]
+}
+
+validate_policy_name = func() {
+
+  # Print some information about the request
+  # Note that these messages will only be printed when the policy is violated
+  print("Namespace path:", namespace.path)
+  print("Request path:", request.path)
+  print("Request data:", request.data)
+
+  disallowed_policies = ["administrator","admin"]
+
+
+  for strings.split(request.data.token_policies, ",") as policy {
+    if policy in disallowed_policies {
+      print("You may not attach an administrator policy to this role.")
+      return false
+    }
+  }
+  return true
+}
+
+# main rule
+main = rule when precond {
+  validate_policy_name()
+}
